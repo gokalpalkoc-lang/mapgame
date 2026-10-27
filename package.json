@@ -1,0 +1,26 @@
+{
+  "name": "mapgame",
+  "version": "1.0.0",
+  "description": "A fast-paced browser territorial expansion strategy game built with Vanilla JavaScript, HTML5 Canvas, and CSS. No external dependencies required.",
+  "main": "game.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gokalpalkoc-lang/mapgame.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gokalpalkoc-lang/mapgame/issues"
+  },
+  "homepage": "https://github.com/gokalpalkoc-lang/mapgame#readme",
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
+}
