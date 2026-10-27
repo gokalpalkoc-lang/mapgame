@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frontier — Territorial Expansion</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+<div id="tooltip" class="hidden"></div>
+
+<div id="hud" class="hidden">
+  <section id="resources" class="glass">
+    <div class="res">
+      <div class="res-top"><span class="k">Troops</span><span class="rate" id="gen">+0/s</span></div>
+      <div class="v"><b id="troops">0</b><span class="muted"> / <span id="cap">0</span></span></div>
+      <div class="bar"><div id="troopBar"></div></div>
+    </div>
+    <div class="res">
+      <div class="res-top"><span class="k">Gold</span><span class="rate gold" id="goldGen">+0/s</span></div>
+      <div class="v"><b id="gold">0</b></div>
+      <div class="sub" id="railInfo">No rails yet</div>
+    </div>
+    <div class="res">
+      <div class="res-top"><span class="k">Land</span></div>
+      <div class="v"><b id="cells">0%</b></div>
+      <div class="sub" id="cellCount">0 tiles</div>
+    </div>
+  </section>
+
+  <div id="statusPill" class="glass"><span class="dot"></span><span id="status">Peaceful</span></div>
+  <div id="proposals"></div>
+
+  <div id="topRight">
+    <div id="controls" class="glass">
+      <span id="time">00:00</span>
+      <button id="pause" class="icon-btn" title="Pause (Space)">❚❚</button>
+      <select id="speed" title="Game speed">
+        <option value="0.5">0.5×</option>
+        <option value="1" selected>1×</option>
+        <option value="2">2×</option>
+        <option value="4">4×</option>
+      </select>
+      <button id="fitView" class="icon-btn" title="Reset view (0)">⌖</button>
+      <button id="fullscreen" class="icon-btn" title="Fullscreen (F)">⛶</button>
+      <button id="helpBtn" class="icon-btn" title="How to play (H)">?</button>
+      <button id="restart" class="icon-btn" title="New game">↻</button>
+    </div>
+    <section id="factions" class="glass">
+      <header><h3>Factions</h3><button id="factionsToggle" class="icon-btn small" title="Collapse">–</button></header>
+      <div id="leaderboard"></div>
+    </section>
+  </div>
+
+  <ul id="log"></ul>
+
+  <div id="bottom">
+    <div id="buildHint" class="glass"></div>
+    <div id="dock" class="glass">
+      <div class="commit">
+        <label for="commit">Attack force <b id="commitVal">50%</b></label>
+        <input type="range" id="commit" min="10" max="100" value="50">
+        <small>of your troops per order</small>
+      </div>
+      <div class="sep"></div>
+      <div id="tools"></div>
+    </div>
+  </div>
+</div>
+
+<div id="menu" class="screen">
+  <div class="card">
+    <h1>Frontier</h1>
+    <p>Claim land, link factories to your cities by rail, and outgrow three rival factions.</p>
+    <div class="row">
+      <button id="play" class="primary big">Play</button>
+      <button id="menuHelp" class="ghost">How to play</button>
+    </div>
+  </div>
+</div>
+
+<div id="overlay" class="screen hidden">
+  <div class="card">
+    <h2 id="overlayTitle">Game over</h2>
+    <p id="overlayText"></p>
+    <div class="row">
+      <button id="overlayRestart" class="primary">Play again</button>
+      <button id="overlayWatch" class="ghost">Keep watching</button>
+    </div>
+  </div>
+</div>
+
+<div id="help" class="screen hidden">
+  <div class="card wide">
+    <h2>How to play</h2>
+    <ul class="help">
+      <li><b>Expand:</b> click a neutral tile touching your land. Each tile costs 5 troops; the claim floods outward until the committed force runs out.</li>
+      <li><b>Attack:</b> click any tile of a bordering enemy. Your force fights along the whole shared border, a few tiles per tick, so the defender keeps regenerating while you push. A tile's defense is the defender's troops divided by its border tiles. Taking it costs you 2.5× that plus 5. If your force can't beat a tile, the attack ends and the rest is lost.</li>
+      <li><b>Troops</b> grow with your land, slowing as your pool fills. Cap is 100 per tile plus 2000 per City. Recruit turns 500 gold into 1000 troops.</li>
+      <li><b>Gold comes only from trains.</b> A Factory lays track to up to 4 of your (or your allies') buildings within 30 tiles, routed through land you hold. Every 4 s each line sends a train; each delivery pays 30 + 3 per tile of track, ×1.5 into a City. Allies earn half when your trains reach their buildings. Losing land under a track cuts the line.</li>
+      <li><b>Buildings</b> take 3×3 tiles of your own land. City: +2000 troop cap, ×1.5 defense on its tiles. Defense Post: ×2 defense on your land within 6 tiles (the hatched zone). Missile Silo: lets you launch nukes. Buildings change hands when their center tile is captured.</li>
+      <li><b>Nukes:</b> wipe a radius of 5, destroy buildings, kill troops of whoever owned the land, and leave fallout for 30 s. Silos reload for 30 s. Nuking an ally breaks the alliance.</li>
+      <li><b>Alliances:</b> propose from the Factions panel. Allies cannot attack each other. Breaking an alliance marks you as a traitor for 60 s: everyone prefers to attack you and nobody will ally with you.</li>
+      <li><b>Win:</b> hold 60% of the land, be the last faction standing, or keep every survivor allied with you for 60 s once the map is full.</li>
+      <li><b>Controls:</b> drag to pan, scroll to zoom, 0 resets the view. Space pauses, 1–6 pick a tool, Shift-click keeps building, Esc or right-click cancels, F toggles fullscreen.</li>
+    </ul>
+    <div class="row"><button id="helpClose" class="primary">Got it</button></div>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
